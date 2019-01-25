@@ -79,7 +79,7 @@ composer test
 
 * Cloud CMS: https://www.cloudcms.com
 * Github: http://github.com/gitana/cloudcms-php-driver
-* PHP Driver Download: 
+* PHP Driver Download: https://packagist.org/packages/cloudcms/cloudcms
 * Cloud CMS Documentation: https://www.cloudcms.com/documentation.html
 * Developers Guide: https://www.cloudcms.com/developers.html
 

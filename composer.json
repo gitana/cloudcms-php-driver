@@ -9,7 +9,7 @@
             "name": "Cloud CMS"
         }
     ],
-    "license": "Apache 2.0",
+    "license": "Apache-2.0",
     "require": {
         "league/oauth2-client": "^2.4"
     },
