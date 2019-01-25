@@ -1,0 +1,27 @@
+{
+    "name": "cloudcms/cloudcms",
+    "description": "PHP Driver for Cloud CMS",
+    "type": "library",
+    "keywords": ["cms", "driver"],
+    "homepage": "https://cloudcms.com",
+    "authors": [
+        {
+            "name": "Cloud CMS"
+        }
+    ],
+    "license": "Apache 2.0",
+    "require": {
+        "league/oauth2-client": "^2.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "CloudCMS\\": "src"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.5"
+    },
+    "scripts": {
+        "test": "./vendor/bin/phpunit --bootstrap vendor/autoload.php --testdox tests"
+    }
+}
