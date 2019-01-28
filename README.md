@@ -69,7 +69,7 @@ $foundNodes = $branch->findNodes($find);
 
 ## Tests
 
-To run the tests for this driver, run:
+To run the tests for this driver, ensure that you have a `gitana.json` file in the driver directory, then run:
 
 ````
 composer test
