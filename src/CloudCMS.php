@@ -50,7 +50,7 @@ class CloudCMS
         // Refresh token if expired
         if ($this->token->hasExpired())
         {
-            $newToken = $provider->getAccessToken("refresh_token", [
+            $newToken = $this->provider->getAccessToken("refresh_token", [
                 "refresh_token" => $this->token->getRefreshToken()
             ]);
             $this->token = $newToken;
