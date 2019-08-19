@@ -72,9 +72,19 @@ class CloudCMS
         }
 
         $url = $this->baseURL . $uri . "?" . Psr7\build_query($params);
-        $request = $this->provider->getAuthenticatedRequest($method, $url, $this->token, [
-            "body" => json_encode($data, JSON_FORCE_OBJECT)
-        ]);
+        
+        $request = null;
+        if ($method == "GET" || $method == "DELETE")
+        {
+            $request = $this->provider->getAuthenticatedRequest($method, $url, $this->token);            
+        }
+        else
+        {
+            $request = $this->provider->getAuthenticatedRequest($method, $url, $this->token, [
+                "body" => json_encode($data, JSON_FORCE_OBJECT)
+            ]);
+        }
+
         $response = $this->provider->getResponse($request);
         
         return json_decode($response->getBody(), true);
