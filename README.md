@@ -6,15 +6,15 @@ The [Cloud CMS](https://www.cloudcms.com/) PHP driver is a client library used t
 
 To install, run:
 
-````
+```
 composer require cloudcms/cloudcms
-````
+```
 
 ## Examples
 
 Below are some examples of how you might use this driver:
 
-````php
+```php
 
 use CloudCMS\CloudCMS;
 
@@ -27,7 +27,7 @@ $client = new CloudCMS();
 $platform = $client->connect($config);
 
 // List Repositories
-$repositories => $platform->listRepositories();
+$repositories = $platform->listRepositories();
 
 // Read Repository
 $repository = $platform->readRepository("<repositoryId>");
@@ -65,23 +65,23 @@ $find = array(
     )
 );
 $foundNodes = $branch->findNodes($find);
-````
+```
 
 ## Tests
 
 To run the tests for this driver, ensure that you have a `gitana.json` file in the driver directory, then run:
 
-````
+```
 composer test
-````
+```
 
 ## Resources
 
-* Cloud CMS: https://www.cloudcms.com
-* Github: http://github.com/gitana/cloudcms-php-driver
-* PHP Driver Download: https://packagist.org/packages/cloudcms/cloudcms
-* Cloud CMS Documentation: https://www.cloudcms.com/documentation.html
-* Developers Guide: https://www.cloudcms.com/developers.html
+- Cloud CMS: https://www.cloudcms.com
+- Github: http://github.com/gitana/cloudcms-php-driver
+- PHP Driver Download: https://packagist.org/packages/cloudcms/cloudcms
+- Cloud CMS Documentation: https://www.cloudcms.com/documentation.html
+- Developers Guide: https://www.cloudcms.com/developers.html
 
 ## Support
 
