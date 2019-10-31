@@ -91,4 +91,26 @@ final class NodeTest extends AbstractWithRepositoryTest
         $node3->delete();
         $node4->delete();
     }
+
+    public function testNodeAssociation()
+    {
+        $nodeObj1 = array(
+            "title" => "Cheese burger",
+            "meal" => "lunch"
+        );
+        $nodeObj2 = array(
+            "title" => "Ham burger",
+            "meal" => "lunch"
+        );
+
+        $node1 = $this->branch->createNode($nodeObj1);
+        $node2 = $this->branch->createNode($nodeObj2);
+
+        $associationNode = $node1->associate($node2, "a:linked", true);
+
+        $this->assertTrue($associationNode instanceof Node);
+
+        $node1->delete();
+        $node2->delete();
+    }
 }
