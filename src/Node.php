@@ -46,7 +46,7 @@ class Node extends AbstractRepositoryDocument
         try
         {
             $params = array("node" => $other_node);
-            $res = $this->client->post($uri, $params, array("_type" => $association));
+            $res = $this->client->post($uri, $params, $association);
             $association_node = new Node($this, $res);
         }
         catch (\GuzzleHttp\Exception\ClientException $ex)

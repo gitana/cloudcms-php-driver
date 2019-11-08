@@ -108,6 +108,7 @@ final class NodeTest extends AbstractWithRepositoryTest
 
         $associationNode = $node1->associate($node2, "a:linked", true);
 
+        $this->assertNotNull($associationNode->id);
         $this->assertTrue($associationNode instanceof Node);
 
         $node1->delete();
