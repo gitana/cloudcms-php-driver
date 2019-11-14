@@ -37,7 +37,7 @@ class Node extends AbstractRepositoryDocument
 
         // if $association is a string assume it is the type of the association to create
         // if an object assume it is the complete set of properties for the assocation node to create
-        if (is_a($association, 'String')) {
+        if (is_string($association)) {
             $association = array("_type" => $association);
         }
 

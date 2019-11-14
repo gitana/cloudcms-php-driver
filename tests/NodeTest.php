@@ -38,6 +38,17 @@ final class NodeTest extends AbstractWithRepositoryTest
         $this->assertNull($nodeRead);        
     }
 
+    public function testNodeNestedArray()
+    {
+        $nodeObj = array(
+            "title" => "MyNode",
+            "nested" => array('1',' 2', '3')
+        );
+        $node = $this->branch->createNode($nodeObj);
+
+        $this->assertEquals(3, count($node->data["nested"]));  
+    }
+
     public function testNodeQueryAndFind()
     {
         $nodeObj1 = array(

@@ -81,7 +81,7 @@ class CloudCMS
         else
         {
             $request = $this->provider->getAuthenticatedRequest($method, $url, $this->token, [
-                "body" => json_encode($data, JSON_FORCE_OBJECT)
+                "body" => json_encode((object)$data)
             ]);
         }
 
