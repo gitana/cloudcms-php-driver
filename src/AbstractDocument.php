@@ -6,6 +6,7 @@ abstract class AbstractDocument
 {
     protected $client;
     public $id;
+    public $data;
 
     public function __construct($client, $data)
     {
@@ -22,7 +23,7 @@ abstract class AbstractDocument
         try
         {
             $newData = $this->client->get($this->uri());
-            $this->data =$newData;
+            $this->data = $newData;
         }
         catch (\GuzzleHttp\Exception\ClientException $ex)
         {

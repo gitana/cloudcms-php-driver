@@ -25,7 +25,7 @@ class CloudCMS
         $missingKeys = array_diff(self::$requiredConfig, $configKeys);
         if (!empty($missingKeys))
         {
-            throw new InvalidArgumentException("Missing required config keys: " . implode(", ", $missingKeys));
+            throw new \InvalidArgumentException("Missing required config keys: " . implode(", ", $missingKeys));
         }
         $this->baseURL = $config["baseURL"];
 
@@ -45,7 +45,7 @@ class CloudCMS
         return $this->readPlatform();
     }
 
-    public function request($method, $uri, $params = array(), $data = array())
+    public function request($method, $uri, $params = array(), $data = array(), $useJson = true)
     {
         // Refresh token if expired
         if ($this->token->hasExpired())
@@ -80,14 +80,26 @@ class CloudCMS
         }
         else
         {
-            $request = $this->provider->getAuthenticatedRequest($method, $url, $this->token, [
-                "body" => json_encode((object)$data)
-            ]);
+            $payload = $data;
+            if ($useJson)
+            {
+                $payload = array(
+                    "body" => json_encode((object)$data)
+                );
+            }
+
+            $request = $this->provider->getAuthenticatedRequest($method, $url, $this->token, $payload);
         }
 
         $response = $this->provider->getResponse($request);
         
-        return json_decode($response->getBody(), true);
+        $result = $response->getBody();
+        if ($useJson)
+        {
+            $result = json_decode($result, true);
+        }
+
+        return $result;
     }
 
     public function get($uri, $params = array())
@@ -108,6 +120,24 @@ class CloudCMS
     public function delete($uri, $params = array())
     {
         return $this->request("DELETE", $uri, $params);
+    }
+
+    public function download($uri, $params = array())
+    {
+        $response = $this->request("GET", $uri, $params, null, false);
+        return $response->getContents();
+    }
+
+    public function upload($uri, $name, $file, $mimetype, $params = array())
+    {
+        $data = array(
+            "body" => $file,
+            "headers" => ["Content-Type" => $mimetype]
+        );
+
+        $params["filename"] = $name;
+
+        return $this->request("POST", $uri, $params, $data, false);
     }
     
     public function readPlatform()

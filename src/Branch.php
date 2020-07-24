@@ -28,7 +28,7 @@ class Branch extends AbstractRepositoryDocument
         try
         {
             $res = $this->client->get($uri);
-            $node = new Node($this, $res);
+            $node = BaseNode::buildNode($this, $res);
         }
         catch (\GuzzleHttp\Exception\ClientException $ex)
         {
@@ -38,12 +38,28 @@ class Branch extends AbstractRepositoryDocument
         return $node;
     }
 
+    public function rootNode()
+    {
+        return $this->readNode("root");
+    }
+
     public function queryNodes($query, $pagination = array())
     {
         $uri = $this->uri() . "/nodes/query";
         $res = $this->client->post($uri, $pagination, $query);
 
-        $nodeList = Node::nodeList($this, $res["rows"]);
+        $nodeList = BaseNode::nodeList($this, $res["rows"]);
+        return $nodeList;
+    }
+
+    public function searchNodes($text, $pagination = array())
+    {
+        $uri = $this->uri() . "/nodes/search";
+        $params = $pagination;
+        $params['text'] = $text;
+
+        $res = $this->client->get($uri, $params);
+        $nodeList = BaseNode::nodeList($this, $res["rows"]);
         return $nodeList;
     }
 
@@ -52,11 +68,11 @@ class Branch extends AbstractRepositoryDocument
         $uri = $this->uri() . "/nodes/find";
         $res = $this->client->post($uri, $pagination, $config);
 
-        $nodeList = Node::nodeList($this, $res["rows"]);
+        $nodeList = BaseNode::nodeList($this, $res["rows"]);
         return $nodeList;
     }
 
-    public function createNode($obj, $options = array())
+    public function createNode($obj = array(), $options = array())
     {
         $uri = $this->uri() . "/nodes";
 

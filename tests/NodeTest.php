@@ -3,17 +3,21 @@
 namespace CloudCMS\Test;
 
 use CloudCMS\Node;
+use CloudCMS\Directionality;
 
 final class NodeTest extends AbstractWithRepositoryTest
 {
-    public $branch;
-
-    /**
-     * @before
-     */
-    public function setupBranch()
+    private function createFile($branch, $parent, $filename, $isFolder)
     {
-        $this->branch = self::$repository->readBranch("master");
+        $node = $branch->createNode(array("title" => $filename));
+        $node->addFeature("f:filename", array("filename" => $filename));
+        if ($isFolder)
+        {
+            $node->addFeature("f:container", array());
+        }
+
+        $parent->associate($node, "a:child", Directionality::DIRECTED);
+        return $node;
     }
     
     public function testNodeCrud()
@@ -49,7 +53,7 @@ final class NodeTest extends AbstractWithRepositoryTest
         $this->assertEquals(3, count($node->data["nested"]));  
     }
 
-    public function testNodeQueryAndFind()
+    public function testNodeQuerySearchFind()
     {
         $nodeObj1 = array(
             "title" => "Cheese burger",
@@ -74,7 +78,7 @@ final class NodeTest extends AbstractWithRepositoryTest
         $node4 = $this->branch->createNode($nodeObj4);
 
         // Wait for nodes to index
-        sleep(5);
+        sleep(20);
 
         $query = array(
             "meal" => "lunch"
@@ -96,6 +100,13 @@ final class NodeTest extends AbstractWithRepositoryTest
         $findNodesIds = array_column($findNodes, "id");
         $this->assertContains($node1->id, $findNodesIds);
         $this->assertContains($node2->id, $findNodesIds);
+
+        $searchNodes = $this->branch->searchNodes("burger");
+        $this->assertContainsOnlyInstancesOf(Node::class, $searchNodes);
+        $this->assertEquals(2, sizeof($searchNodes));
+        $searchNodeIds = array_column($searchNodes, "id");
+        $this->assertContains($node1->id, $searchNodeIds);
+        $this->assertContains($node2->id, $searchNodeIds);        
         
         $node1->delete();
         $node2->delete();
@@ -103,26 +114,46 @@ final class NodeTest extends AbstractWithRepositoryTest
         $node4->delete();
     }
 
-    public function testNodeAssociation()
+    public function testFeatures()
     {
-        $nodeObj1 = array(
-            "title" => "Cheese burger",
-            "meal" => "lunch"
-        );
-        $nodeObj2 = array(
-            "title" => "Ham burger",
-            "meal" => "lunch"
-        );
+        $node = $this->branch->createNode(array());
+        $featureIds = $node->getFeatureIds();
+        $this->assertTrue(sizeof($featureIds) > 0);
 
-        $node1 = $this->branch->createNode($nodeObj1);
-        $node2 = $this->branch->createNode($nodeObj2);
+        $node->addFeature("f:filename", array("filename" => "file1"));
+        $featureIds = $node->getFeatureIds();
+        $this->assertContains("f:filename", $featureIds);
+        $this->assertTrue($node->hasFeature("f:filename"));
+        $featureObj = $node->getFeature("f:filename");
+        $this->assertEquals("file1", $featureObj["filename"]);
 
-        $associationNode = $node1->associate($node2, "a:linked", true);
+        $node->removeFeature("f:filename");
+        $featureIds = $node->getFeatureIds();
+        $this->assertNotContains("f:filename", $featureIds);
+        $this->assertFalse($node->hasFeature("f:filename"));
+        $this->assertNull($node->getFeature("f:filename"));
 
-        $this->assertNotNull($associationNode->id);
-        $this->assertTrue($associationNode instanceof Node);
+        $node->delete();
+    }
 
-        $node1->delete();
-        $node2->delete();
+    public function testTranslations()
+    {
+        $rootNode = $this->branch->rootNode();
+
+        $node = $this->createFile($this->branch, $rootNode, "theNode", false);
+        $german = $node->createTranslation("de_DE", "1.0", array("title" => "german node"));
+        $this->assertNotNull($german);
+
+        $spanish1 = $node->createTranslation("es_ES", "1.0", array("title" => "spanish node"));
+        $spanish2 = $node->createTranslation("es_ES", "2.0", array("title" => "spanish node 2"));
+
+        $editions = $node->getTranslationEditions();
+        $this->assertEquals(2, sizeof($editions));
+
+        $locales = $node->getTranslationLocales("1.0");
+        $this->assertEquals(2, sizeof($locales));
+
+        $translation = $node->readTranslation("es_MX", "2.0");
+        $this->assertEquals("spanish node 2", $translation->data["title"]);
     }
 }
