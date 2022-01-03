@@ -113,4 +113,30 @@ class Branch extends AbstractRepositoryDocument
         $uri = $this->uri() . "/nodes/delete";
         $this->client->post(uri, $nodeIds);
     }
+
+    public function graphqlQuery($query, $operationName = null, $variables = array())
+    {
+        $uri = $this->uri() . "/graphql";
+
+        $params = array();
+        $params["query"] = $query;
+
+        if ($variables != null)
+        {
+            $params["variables"] = $variables;
+        }
+
+        if ($operationName != null)
+        {
+            $params["operation_name"] = $operationName;
+        }
+
+        return $this->client->get($uri, $params);
+    }
+
+    public function graphqlSchema()
+    {
+        $uri = $this->uri() . "/graphql/schema";
+        return $this->client->request("GET", $uri, array(), array(), false);
+    }
 }

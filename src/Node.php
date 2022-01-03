@@ -69,7 +69,7 @@ class Node extends BaseNode
     public function associations($pagination = array(), $direction=Direction::ANY, $associationTypeQName = null)
     {
         $uri = $this->uri() . "/associations";
-        $params = array();
+        $params = $pagination || array();
         $params["direction"] = $direction;
 
         if ($associationTypeQName != null)
