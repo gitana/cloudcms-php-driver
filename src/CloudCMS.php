@@ -62,6 +62,11 @@ class CloudCMS
             $params["full"] = true;
         }
 
+        if (!isset($params["metadata"]))
+        {
+            $params["metadata"] = true;
+        }
+
         // Change all boolean params to strings so they are properly interpreted by the API
         foreach($params as &$value)
         {

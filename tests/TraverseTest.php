@@ -39,6 +39,13 @@ final class TraverseTest extends AbstractWithRepositoryTest
         $file4 = $this->createFile($this->branch, $folder1, "file4", false);
         $file5 = $this->createFile($this->branch, $folder2, "file5", false);
 
+        // test path resolves
+        $path = $file5->resolvePath();
+        $this->assertEquals('/folder1/folder2/file5', $path);
+
+        $paths = $file5->resolvePaths();
+        $this->assertGreaterThan(0, sizeof($paths));
+
         $traverse = [
             "depth" => 1,
             "filter" => "ALL_BUT_START_NODE",

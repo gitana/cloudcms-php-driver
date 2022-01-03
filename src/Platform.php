@@ -13,7 +13,7 @@ class Platform extends AbstractDocument
 
     public function uri()
     {
-        return "/";
+        return "";
     }
 
     public function listRepositories()

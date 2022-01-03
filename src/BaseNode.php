@@ -84,6 +84,15 @@ abstract class BaseNode extends AbstractRepositoryDocument
         $this->reload();
     }
 
+    public function changeQName($newQName)
+    {
+        $uri = $this->uri() . "/change_qname";
+        $params = array();
+        $params["qname"] = $newQName;
+
+        return $this->client->post($uri, $params, array());
+    }
+
     // Static
 
     public static function buildNode($branch, $data, $forceAssociation = false)

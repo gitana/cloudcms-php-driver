@@ -172,6 +172,23 @@ class Node extends BaseNode
         return $results;
     }    
 
+    public function resolvePath()
+    {
+        $uri = $this->uri() . "/path";
+        $params = array("rootNodeId" => "821c40ab613d9b5bcbbc656b62229301"); // r:root or this?
+
+        $response = $this->client->get($uri, $params);
+        return $response["path"];
+    }
+
+    public function resolvePaths()
+    {
+        $uri = $this->uri() . "/paths";
+
+        $response = $this->client->get($uri, array());
+        return $response["paths"];
+    }
+
     public function createTranslation($locale, $edition, $obj)
     {
         $uri = $this->uri() . "/i18n";

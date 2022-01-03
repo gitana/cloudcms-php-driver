@@ -156,4 +156,14 @@ final class NodeTest extends AbstractWithRepositoryTest
         $translation = $node->readTranslation("es_MX", "2.0");
         $this->assertEquals("spanish node 2", $translation->data["title"]);
     }
+
+    public function testChangeQName()
+    {
+        $nodeObj = array("_type"=>"n:node", "title"=>"Test Node");
+        $node = $this->branch->createNode($nodeObj);
+        $node->changeQName("o:blah");
+        $node->reload();
+
+        $this->assertEquals("o:blah", $node->data["_qname"]);
+    }
 }
