@@ -2,18 +2,16 @@
 
 namespace CloudCMS;
 
-abstract class AbstractRepositoryDocument extends AbstractDocument
+abstract class AbstractRepositoryDocument extends AbstractPlatformDocument
 {
     protected $repository;
     public $repositoryId;
-    public $platformId;
 
     public function __construct($repository, $data)
     {
-        parent::__construct($repository->client, $data);
+        parent::__construct($repository->platform, $data);
 
         $this->repository = $repository;
         $this->repositoryId = $repository->id;
-        $this->platformId = $repository->platformId;
     }
 }

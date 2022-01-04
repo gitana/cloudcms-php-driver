@@ -166,4 +166,24 @@ final class NodeTest extends AbstractWithRepositoryTest
 
         $this->assertEquals("o:blah", $node->data["_qname"]);
     }
+
+    public function testVersions()
+    {
+        $node = $this->branch->createNode(array("title"=>"test node"));
+        $firstChangeset = $node->data["_system"]["changeset"];
+
+        $node->data["title"] = "new stuff";
+        $node->update();
+        $node->reload();
+        $this->assertEquals("new stuff", $node->data["title"]);
+
+        $versions = $node->listVersions();
+        $this->assertEquals(2, sizeof($versions));
+
+        $firstVersion = $node->readVersion($firstChangeset);
+        $this->assertEquals("test node", $firstVersion->data["title"]);
+
+        $restoredVersion = $node->restoreVersion($firstChangeset);
+        $this->assertEquals("test node", $restoredVersion->data["title"]);
+    }
 }

@@ -119,7 +119,7 @@ class Node extends BaseNode
 
         if ($containersOnly)
         {
-            $params["containers"] = $containers;
+            $params["containers"] = $containersOnly;
         }
 
         return $this->client->post($uri, $params);

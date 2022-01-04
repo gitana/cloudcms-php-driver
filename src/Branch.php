@@ -2,6 +2,8 @@
 
 namespace CloudCMS;
 
+use CloudCMS\Platform;
+
 class Branch extends AbstractRepositoryDocument
 {
     public $platformId;
@@ -111,7 +113,7 @@ class Branch extends AbstractRepositoryDocument
     public function deleteNodes($nodeIds)
     {
         $uri = $this->uri() . "/nodes/delete";
-        $this->client->post(uri, $nodeIds);
+        $this->client->post($uri, $nodeIds);
     }
 
     public function graphqlQuery($query, $operationName = null, $variables = array())
@@ -138,5 +140,16 @@ class Branch extends AbstractRepositoryDocument
     {
         $uri = $this->uri() . "/graphql/schema";
         return $this->client->request("GET", $uri, array(), array(), false);
+    }
+
+    public function startReset($changesetId)
+    {
+        $uri = $this->uri() . "/reset/start";
+        $params = array("id" => $changesetId);
+
+        $res = $this->client->post($uri, $params, array());
+        $jobId = $res["_doc"];
+
+        return $this->platform->readJob($jobId);
     }
 }

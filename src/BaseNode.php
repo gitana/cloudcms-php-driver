@@ -90,7 +90,33 @@ abstract class BaseNode extends AbstractRepositoryDocument
         $params = array();
         $params["qname"] = $newQName;
 
-        return $this->client->post($uri, $params, array());
+        $res = $this->client->post($uri, $params, array());
+        return BaseNode::buildNode($this->branch, $res);
+    }
+
+    public function readVersion($changesetId, $options = array())
+    {
+        $uri = $this->uri() . "/versions/" . $changesetId;
+        $res = $this->client->get($uri, $options);
+
+        return BaseNode::buildNode($this->branch, $res);
+    }
+
+    public function listVersions($options = array(), $pagination = array())
+    {
+        $uri = $this->uri() . "/versions";
+        $params = array_merge($options, $pagination);
+
+        $res = $this->client->get($uri, $params);
+        return BaseNode::nodeList($this->branch, $res["rows"]);
+    }
+
+    public function restoreVersion($changesetId)
+    {
+        $uri = $this->uri() . "/versions/" . $changesetId . "/restore";
+        $res = $this->client->post($uri, array(), array());
+
+        return BaseNode::buildNode($this->branch, $res);
     }
 
     // Static
