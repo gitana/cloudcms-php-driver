@@ -175,9 +175,8 @@ class Node extends BaseNode
     public function resolvePath()
     {
         $uri = $this->uri() . "/path";
-        $params = array("rootNodeId" => "821c40ab613d9b5bcbbc656b62229301"); // r:root or this?
 
-        $response = $this->client->get($uri, $params);
+        $response = $this->client->get($uri, array());
         return $response["path"];
     }
 
