@@ -1,6 +1,6 @@
 # Cloud CMS PHP Driver
 
-The [Cloud CMS](https://www.cloudcms.com/) PHP driver is a client library used to facilitate connections to the Cloud CMS API. The driver handles OAuth authentication and token management, HTTPS calls, and provides convenient methods and classes with which to perform content operations. It works against Cloud CMS instances on our SaaS platform as well as on-premise installations.
+The [Cloud CMS](https://gitana.io) PHP driver is a client library used to facilitate connections to the Cloud CMS API. The driver handles OAuth authentication and token management, HTTPS calls, and provides convenient methods and classes with which to perform content operations. It works against Cloud CMS instances on our SaaS platform as well as on-premise installations.
 
 ## Installation
 
@@ -77,11 +77,11 @@ composer test
 
 ## Resources
 
-- Cloud CMS: https://www.cloudcms.com
+- Cloud CMS: https://gitana.io
 - Github: http://github.com/gitana/cloudcms-php-driver
 - PHP Driver Download: https://packagist.org/packages/cloudcms/cloudcms
-- Cloud CMS Documentation: https://www.cloudcms.com/documentation.html
-- Developers Guide: https://www.cloudcms.com/developers.html
+- Cloud CMS Documentation: https://gitana.io/documentation.html
+- Developers Guide: https://gitana.io/developers.html
 
 ## Support
 
